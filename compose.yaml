@@ -3,12 +3,16 @@ services:
     build:
       context: ./backend
     ports:
-      - "5000:5000"
+      - "5001:5000"
+    volumes:
+      - ./content:/app/content
   
   frontend:
     build:
       context: ./frontend
     ports:
       - "5173:5173"
+    environment:
+      API_PROXY_TARGET: http://backend:5000
     depends_on:
       - backend
