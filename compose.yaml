@@ -11,7 +11,7 @@ services:
     build:
       context: ./frontend
     ports:
-      - "40100:5173"
+      - "40244:5173"
     environment:
       API_PROXY_TARGET: http://backend:5000
     depends_on:
