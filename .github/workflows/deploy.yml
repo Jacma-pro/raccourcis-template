@@ -17,4 +17,5 @@ jobs:
           script: |
             cd ${{ secrets.VPS_PATH }}
             git pull origin main
+            docker-compose down
             docker-compose up -d --build
