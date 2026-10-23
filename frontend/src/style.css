@@ -20,6 +20,10 @@ h1 span { color: #66824b; }
 .toolbar { display: flex; justify-content: space-between; gap: 24px; align-items: end; margin: 48px 0 24px; }
 h2 { margin: 0 0 12px; font-size: 26px; }
 .count { display: inline-block; background: #e0e8d7; padding: 4px 10px; border-radius: 20px; font: 14px 'Avenir Next', 'Segoe UI', sans-serif; vertical-align: middle; }
+.filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+.chip { border: 1px solid #c9d6bb; background: #fff; color: #45603d; padding: 6px 14px; border-radius: 20px; font: 600 13px 'Avenir Next', 'Segoe UI', sans-serif; cursor: pointer; }
+.chip:hover { background: #eaf0de; }
+.chip[aria-pressed="true"] { background: #45603d; border-color: #45603d; color: #fff; }
 .search { width: min(100%, 330px); font-size: 13px; }
 input, textarea { display: block; width: 100%; border: 1px solid #bac8b7; border-radius: 8px; padding: 12px; background: #fffef9; font: inherit; color: inherit; margin-top: 7px; }
 input:focus, textarea:focus { outline: 2px solid #66824b; outline-offset: 2px; }

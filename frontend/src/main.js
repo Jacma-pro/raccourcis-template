@@ -14,10 +14,20 @@ function showIndex(shortcuts) {
     <p class="intro">Nos raccourcis préférés, documentés ensemble. Explorez une fiche ou partagez votre prochaine découverte.</p>
     <div class="toolbar"><h2>Le sommaire <span class="count">${shortcuts.length}</span></h2>
     <label class="search">Rechercher une fiche<input id="search" type="search" placeholder="Titre, touches, catégorie…" /></label></div>
+    <div id="filters" class="filters" role="group" aria-label="Filtrer par catégorie"></div>
     <div id="cards" class="cards"></div>`;
   const cards = document.querySelector('#cards');
-  function renderCards(query = '') {
-    const matches = shortcuts.filter((item) =>
+  const filters = document.querySelector('#filters');
+  const categories = [...new Set(shortcuts.map((item) => item.category))].sort((a, b) => a.localeCompare(b, 'fr'));
+  let query = '';
+  let category = '';
+
+  function renderFilters() {
+    filters.innerHTML = ['', ...categories].map((name) => `
+      <button type="button" class="chip" data-category="${e(name)}" aria-pressed="${name === category}">${name ? e(name) : 'Toutes'}</button>`).join('');
+  }
+  function renderCards() {
+    const matches = shortcuts.filter((item) => (!category || item.category === category) &&
       `${item.title} ${item.description} ${item.keys} ${item.category}`.toLocaleLowerCase('fr').includes(query));
     cards.innerHTML = matches.map((item) => `
       <a class="card" href="#/raccourci/${encodeURIComponent(item.slug)}">
@@ -25,9 +35,19 @@ function showIndex(shortcuts) {
         <h3>${e(item.title)}</h3><p>${e(item.description)}</p><span class="read">Lire la fiche ↗</span>
       </a>`).join('') || '<p class="empty">Aucune fiche trouvée. Ajoutez votre premier raccourci !</p>';
   }
+  renderFilters();
   renderCards();
+  filters.addEventListener('click', (event) => {
+    const chip = event.target.closest('.chip');
+    if (!chip) return;
+    category = chip.dataset.category;
+    renderFilters();
+    filters.querySelector('[aria-pressed="true"]').focus();
+    renderCards();
+  });
   document.querySelector('#search').addEventListener('input', (event) => {
-    renderCards(event.target.value.trim().toLocaleLowerCase('fr'));
+    query = event.target.value.trim().toLocaleLowerCase('fr');
+    renderCards();
   });
 }
 
