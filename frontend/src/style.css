@@ -57,3 +57,8 @@ footer { padding: 25px; border-top: 1px solid #d8dfd3; text-align: center; font-
 @media (max-width: 800px) { .cards { grid-template-columns: repeat(2, 1fr); } .brand span { display: none; } }
 @media (max-width: 560px) { .cards, .form-grid { grid-template-columns: 1fr; } .header, .toolbar { align-items: stretch; flex-direction: column; } nav { justify-content: space-between; } main { padding: 32px 20px 50px; } .form { padding: 20px; } .search { width: 100%; } }
 @media (prefers-reduced-motion: reduce) { .card { transition: none; } }
+
+.form-grid label { position: relative; }
+.suggestions { position: absolute; z-index: 10; left: 0; right: 0; top: 100%; margin: 4px 0 0; padding: 4px; list-style: none; background: #fff; border: 1px solid #c9d6bb; border-radius: 8px; box-shadow: 0 8px 20px rgba(0, 0, 0, .1); max-height: 220px; overflow-y: auto; }
+.suggestions li { padding: 8px 10px; border-radius: 5px; cursor: pointer; font: 14px 'Avenir Next', 'Segoe UI', sans-serif; }
+.suggestions li:hover, .suggestions li[aria-selected="true"] { background: #eaf0de; color: #45603d; }
