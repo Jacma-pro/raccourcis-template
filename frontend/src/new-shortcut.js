@@ -6,6 +6,16 @@ const KEY_LABELS = {
   ArrowUp: '↑', ArrowDown: '↓', ArrowLeft: '←', ArrowRight: '→',
 };
 
+// Disposition réelle du clavier (AZERTY, QWERTY…), disponible sur Chrome et Edge.
+let layoutMap = null;
+navigator.keyboard?.getLayoutMap().then((map) => { layoutMap = map; }).catch(() => {});
+
+// event.code désigne une position physique (la touche Z d'un AZERTY donne KeyW) :
+// on le traduit avec la disposition réelle. Sans elle, event.key convient sauf avec Alt sur Mac (Alt + P donne « π »).
+function letterFor(event) {
+  return layoutMap?.get(event.code) ?? (/^[a-z]$/i.test(event.key) ? event.key : event.code.slice(3));
+}
+
 // Transforme un événement clavier en texte : « Ctrl + Maj + P ».
 function describeKey(event) {
   const parts = [];
@@ -13,9 +23,8 @@ function describeKey(event) {
   if (event.altKey) parts.push('Alt');
   if (event.shiftKey) parts.push('Maj');
   if (event.metaKey) parts.push('Cmd');
-  // event.code évite que Alt + P donne « π » sur Mac.
-  const main = /^Key[A-Z]$/.test(event.code) ? event.code.slice(3)
-    : /^Digit\d$/.test(event.code) ? event.code.slice(5)
+  const main = /^Digit\d$/.test(event.code) ? event.code.slice(5)
+    : /^Key[A-Z]$/.test(event.code) ? letterFor(event).toUpperCase()
     : KEY_LABELS[event.key] ?? (event.key.length === 1 ? event.key.toUpperCase() : event.key);
   return [...parts, main].join(' + ');
 }
