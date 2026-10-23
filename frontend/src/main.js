@@ -67,5 +67,13 @@ async function route() {
   app.focus();
 }
 
+// Cmd + Entrée (Ctrl + Entrée hors macOS) ouvre le formulaire de création.
+window.addEventListener('keydown', (event) => {
+  if (event.key !== 'Enter' || event.repeat || !(event.metaKey || event.ctrlKey)) return;
+  if (location.hash === '#/nouveau') return;
+  event.preventDefault();
+  location.hash = '/nouveau';
+});
+
 window.addEventListener('hashchange', route);
 route();
